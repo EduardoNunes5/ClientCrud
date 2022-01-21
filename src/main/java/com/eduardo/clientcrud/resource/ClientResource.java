@@ -43,4 +43,14 @@ public class ClientResource {
         return ResponseEntity.created(uri).body(service.insert(dto));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ClientDTO> findById(@PathVariable Long id){
+        return ResponseEntity.ok().body(service.findById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientDTO> update(@PathVariable Long id, @RequestBody ClientDTO dto){
+        return ResponseEntity.ok().body(service.update(id, dto));
+    }
+
 }
