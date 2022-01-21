@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ClientService {
@@ -14,9 +15,10 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Transactional(readOnly = true)
     public Page<ClientDTO> findAllPaged(Pageable pageable){
         return clientRepository.findAll(pageable)
                 .map(cli -> new ClientDTO(cli));
-
     }
+
 }
