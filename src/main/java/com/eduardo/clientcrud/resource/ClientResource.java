@@ -8,10 +8,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/clients")
@@ -30,6 +32,15 @@ public class ClientResource {
         Pageable pageReq = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
 
         return ResponseEntity.ok().body(service.findAllPaged(pageReq));
+    }
+
+    @PostMapping
+    public ResponseEntity<ClientDTO> insert(@RequestBody ClientDTO dto){
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequestUri()
+                .path("/{id}")
+                .buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(service.insert(dto));
     }
 
 }
